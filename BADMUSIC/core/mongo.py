@@ -1,37 +1,46 @@
-# Copyright (C) 2024 by Badhacker98@Github, < https://github.com/Badhacker98 >.
-# Owner https://t.me/ll_BAD_MUNDA_ll
+from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo.errors import ConfigurationError, ConnectionFailure, ServerSelectionTimeoutError
 
-from motor.motor_asyncio import AsyncIOMotorClient as _mongo_client_
-from pymongo import MongoClient
-from pyrogram import Client
-
-import config
-
+from config import MONGO_DB_URI
 from ..logging import LOGGER
 
-TEMP_MONGODB = "mongodb+srv://BADMUNDA:BADMYDAD@badhacker.i5nw9na.mongodb.net/"
+MONGO_TIMEOUT_MS = 10000
 
 
-if config.MONGO_DB_URI is None:
-    LOGGER(__name__).warning(
-        "𝐍o 𝐌ONGO 𝐃B 𝐔RL 𝐅ound.. 𝐘our 𝐁ot 𝐖ill 𝐖ork 𝐎n 𝐁ᴀᴅ 𝐌𝐔𝐒𝐈𝐂 𝐃atabase"
+def _validate_mongo_uri(uri: str) -> None:
+    if not uri:
+        raise RuntimeError(
+            "MONGO_DB_URI is missing. On Railway, add MONGO_DB_URI or link the MongoDB "
+            "plugin variable MONGO_URL to MONGO_DB_URI."
+        )
+    if not uri.startswith(("mongodb://", "mongodb+srv://")):
+        raise RuntimeError(
+            "MongoDB URI must start with mongodb:// or mongodb+srv://. Check Railway variables."
+        )
+
+
+LOGGER(__name__).info("Connecting to your Mongo Database...")
+try:
+    _validate_mongo_uri(MONGO_DB_URI)
+    mongo_client = AsyncIOMotorClient(
+        MONGO_DB_URI,
+        connectTimeoutMS=MONGO_TIMEOUT_MS,
+        serverSelectionTimeoutMS=MONGO_TIMEOUT_MS,
     )
-    temp_client = Client(
-        "BADMUSIC",
-        bot_token=config.BOT_TOKEN,
-        api_id=config.API_ID,
-        api_hash=config.API_HASH,
-    )
-    temp_client.start()
-    info = temp_client.get_me()
-    username = info.username
-    temp_client.stop()
-    _mongo_async_ = _mongo_client_(TEMP_MONGODB)
-    _mongo_sync_ = MongoClient(TEMP_MONGODB)
-    mongodb = _mongo_async_[username]
-    pymongodb = _mongo_sync_[username]
-else:
-    _mongo_async_ = _mongo_client_(config.MONGO_DB_URI)
-    _mongo_sync_ = MongoClient(config.MONGO_DB_URI)
-    mongodb = _mongo_async_.BADMUSIC
-    pymongodb = _mongo_sync_.BADMUSIC
+    mongodb = mongo_client.Bad
+except (ConfigurationError, RuntimeError) as exc:
+    LOGGER(__name__).error("Failed to configure Mongo Database: %s", exc)
+    raise SystemExit(1) from exc
+
+
+async def verify_mongo_connection() -> None:
+    try:
+        await mongo_client.admin.command("ping")
+        LOGGER(__name__).info("Connected to your Mongo Database.")
+    except (ConnectionFailure, ServerSelectionTimeoutError, ConfigurationError) as exc:
+        LOGGER(__name__).error(
+            "Failed to connect to your Mongo Database: %s. "
+            "If you use MongoDB Atlas, allow Railway's outbound IPs or allow 0.0.0.0/0 in Network Access.",
+            exc.__class__.__name__,
+        )
+        raise SystemExit(1) from exc
