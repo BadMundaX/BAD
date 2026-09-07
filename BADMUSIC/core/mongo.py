@@ -1,3 +1,5 @@
+import asyncio
+
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.errors import ConfigurationError, ConnectionFailure, ServerSelectionTimeoutError
 
@@ -5,6 +7,11 @@ from config import MONGO_DB_URI
 from ..logging import LOGGER
 
 MONGO_TIMEOUT_MS = 10000
+
+try:
+    asyncio.get_event_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
 
 
 def _validate_mongo_uri(uri: str) -> None:
@@ -44,3 +51,4 @@ async def verify_mongo_connection() -> None:
             exc.__class__.__name__,
         )
         raise SystemExit(1) from exc
+        
