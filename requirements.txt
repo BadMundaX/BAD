@@ -34,10 +34,10 @@ requests
 speedtest-cli
 spotipy
 tgcrypto
-urllib3
+urllib3==2.7.0
 uvloop
 flask
-urllib3==2.2.3
+urllib3==2.7.0==2.2.3
 gunicorn==20.1.0
 yt-dlp
 youtube-search
