@@ -38,3 +38,4 @@ yt-dlp
 youtube-search
 youtube-search-python
 kurigram
+py-yt-search
