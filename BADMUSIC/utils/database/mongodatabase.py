@@ -16,12 +16,184 @@ usersdb = mongodb.tgusersdb
 playlistdb = mongodb.playlist
 blockeddb = mongodb.blockedusers
 privatedb = mongodb.privatechats
+autoplaydb = mongodb.autoplay
+autoplayhistorydb = mongodb.autoplayhistory
+autoplaylangdb = mongodb.autoplaylang
+autoplaymooddb = mongodb.autoplaymood
+thumbdb = mongodb.thumbnail
+thumbdb = mongodb.thumbmode
 
 playlist = []
+autoplay = {}
+autoplay_history = {}
+thumbmode = {}
+autoplay_lang = {}
+autoplay_mood = {}
+
+# ==========================================
+# THUMBNAIL MODE
+# ==========================================
+
+def _bool_mode(value, default: bool = False) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return default
+    if isinstance(value, (int, float)):
+        return bool(value)
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "on", "enable", "enabled", "yes", "1"}:
+            return True
+        if normalized in {"false", "off", "disable", "disabled", "no", "0", ""}:
+            return False
+    return default
+
+
+async def is_thumbmode(chat_id: int) -> bool:
+    user = await thumbdb.find_one({"chat_id": chat_id})
+
+    if not user:
+        thumbmode[chat_id] = False
+        return False
+
+    mode = _bool_mode(user.get("mode"), default=False)
+    thumbmode[chat_id] = mode
+    return mode
+
+
+async def thumb_on(chat_id: int):
+    thumbmode[chat_id] = True
+    await thumbdb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"mode": True}},
+        upsert=True
+    )
+
+
+async def thumb_off(chat_id: int):
+    thumbmode[chat_id] = False
+    await thumbdb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"mode": False}},
+        upsert=True
+    )
+
+async def set_thumb_mode(chat_id: int, value: bool):
+    await thumbdb.update_one(
+        {"_id": chat_id},
+        {"$set": {"thumb": value}},
+        upsert=True
+    )
+
+async def get_thumb_mode(chat_id: int):
+    data = await thumbdb.find_one({"_id": chat_id})
+
+    if not data:
+        return True  # default ON
+
+    return data.get("thumb", True)
+
+#autoplay
+async def is_autoplay(chat_id: int) -> bool:
+    mode = autoplay.get(chat_id)
+    if mode is not None:
+        return _bool_mode(mode, default=False)
+    user = await autoplaydb.find_one({"chat_id": chat_id})
+    mode = _bool_mode(user.get("mode") if user else None, default=False)
+    autoplay[chat_id] = mode
+    return mode
+
+
+async def autoplay_on(chat_id: int):
+    autoplay[chat_id] = True
+    await autoplaydb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"mode": True}},
+        upsert=True,
+    )
+
+
+async def autoplay_off(chat_id: int):
+    autoplay[chat_id] = False
+    await autoplaydb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"mode": False}},
+        upsert=True,
+    )
+
+
+async def ap_history_get(chat_id: int) -> List[str]:
+    cached = autoplay_history.get(chat_id)
+    if cached is not None:
+        return cached
+    data = await autoplayhistorydb.find_one({"chat_id": chat_id})
+    history = data.get("history", []) if data else []
+    autoplay_history[chat_id] = history
+    return history
+
+
+async def ap_history_add(chat_id: int, videoid: str):
+    if not videoid:
+        return
+    history = list(await ap_history_get(chat_id))
+    if videoid in history:
+        history.remove(videoid)
+    history.append(videoid)
+    history = history[-60:]
+    autoplay_history[chat_id] = history
+    await autoplayhistorydb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"history": history}},
+        upsert=True,
+    )
+
+
+async def ap_history_clear(chat_id: int):
+    autoplay_history[chat_id] = []
+    await autoplayhistorydb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"history": []}},
+        upsert=True,
+    )
+
+# autoplay language
+async def get_autoplay_lang(chat_id: int) -> str:
+    mode = autoplay_lang.get(chat_id)
+    if mode:
+        return mode
+    user = await autoplaylangdb.find_one({"chat_id": chat_id})
+    lang = user.get("lang") if user else "auto"
+    autoplay_lang[chat_id] = lang
+    return lang
+
+async def set_autoplay_lang(chat_id: int, lang: str):
+    autoplay_lang[chat_id] = lang
+    await autoplaylangdb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"lang": lang}},
+        upsert=True,
+    )
+
+async def get_autoplay_mood(chat_id: int) -> str:
+    mode = autoplay_mood.get(chat_id)
+    if mode:
+        return mode
+    user = await autoplaymooddb.find_one({"chat_id": chat_id})
+    mood = user.get("mood") if user else "any"
+    autoplay_mood[chat_id] = mood
+    return mood
+
+async def set_autoplay_mood(chat_id: int, mood: str):
+    autoplay_mood[chat_id] = mood
+    await autoplaymooddb.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"mood": mood}},
+        upsert=True,
+    )
+    
 
 # Playlist
-
-
 async def _get_playlists(chat_id: int) -> Dict[str, int]:
     _notes = await playlistdb.find_one({"chat_id": chat_id})
     if not _notes:
