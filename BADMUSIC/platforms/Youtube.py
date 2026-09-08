@@ -62,7 +62,7 @@ async def download_video(link: str) -> str:
             except: pass
         return None
 
-class YouTubeAPI:
+class YouTube:
     def __init__(self):
         self.base = "https://www.youtube.com/watch?v="
         self.regex = r"(?:youtube\.com|youtu\.be)"
@@ -269,4 +269,3 @@ class YouTubeAPI:
         except Exception: pass
         return []
 
-YouTube = YouTube()
