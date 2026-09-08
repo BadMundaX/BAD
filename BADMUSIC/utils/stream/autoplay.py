@@ -2,7 +2,7 @@ import asyncio
 import random
 import re
 import config
-from BADMUSIC import LOGGER, YouTube, app
+from BADMUSIC import LOGGER, Platform, app
 from BADMUSIC.misc import db
 from BADMUSIC.utils.database import is_autoplay, get_autoplay_lang, get_autoplay_mood, set_autoplay_lang, set_autoplay_mood
 from BADMUSIC.utils.stream.queue import put_queue
@@ -1708,7 +1708,7 @@ async def queue_autoplay_tracks(chat_id: int, seed_track: dict, limit: int = AUT
                 if len(candidates) >= limit * 2:
                     break
                 try:
-                    result, vidid = await YouTube.track(query)
+                    result, vidid = await Platform.YouTube.track(query)
                     if result and vidid:
                         if vidid not in queued_vids:
                             is_dup = False
@@ -1741,7 +1741,7 @@ async def queue_autoplay_tracks(chat_id: int, seed_track: dict, limit: int = AUT
             if not next_id or next_id in queued_vids: continue
             
             try:
-                title, duration_min, duration_sec, _, next_vidid = await YouTube.details(next_id, videoid=True)
+                title, duration_min, duration_sec, _, next_vidid = await Platform.YouTube.details(next_id, videoid=True)
                 if not title: title = candidate.get("title", "Unknown")
                 if not duration_min or duration_min == "0:00": duration_min = "3:00"
             except Exception as e:
