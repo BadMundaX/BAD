@@ -20,7 +20,6 @@ from config import BANNED_USERS, START_IMG_URL
 from strings import get_string
 from BADMUSIC import Platform, app
 from BADMUSIC.misc import SUDOERS, _boot_
-from BADMUSIC.plugins.play.playlist import del_plist_msg
 from BADMUSIC.plugins.sudo.sudoers import sudoers_list
 from BADMUSIC.utils.database import (
     add_served_chat,
