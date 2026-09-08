@@ -23,9 +23,23 @@ autoplaymooddb = mongodb.autoplaymood
 thumbdb = mongodb.thumbnail
 thumbdb = mongodb.thumbmode
 
-playlist = []
+# Shifting to memory [mongo sucks often]
+active = []
+activevideo = []
+assistantdict = {}
+autoend = {}
 autoplay = {}
 autoplay_history = {}
+count = {}
+channelconnect = {}
+langm = {}
+loop = {}
+maintenance = []
+nonadmin = {}
+pause = {}
+playmode = {}
+playtype = {}
+skipmode = {}
 thumbmode = {}
 autoplay_lang = {}
 autoplay_mood = {}
