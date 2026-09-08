@@ -269,4 +269,4 @@ class YouTubeAPI:
         except Exception: pass
         return []
 
-YouTube = YouTubeAPI()
+YouTube = YouTube()
