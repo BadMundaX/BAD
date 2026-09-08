@@ -5,7 +5,7 @@ from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
 import config
 from BADMUSIC import app, LOGGER, Platform
-from BADMUSIC.core.call import Bad
+from BADMUSIC.core.call import BAD as Bad
 from BADMUSIC.utils import seconds_to_min, time_to_seconds
 from BADMUSIC.utils.database import is_thumbmode
 from BADMUSIC.utils.channelplay import get_channeplayCB
