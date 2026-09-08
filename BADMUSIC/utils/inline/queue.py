@@ -1,6 +1,15 @@
+import random
 from typing import Union
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.enums import ButtonStyle
+
+def Badbtn():
+    return random.choice([
+        ButtonStyle.SUCCESS,
+        ButtonStyle.DANGER,
+        ButtonStyle.PRIMARY
+    ])
 
 
 def queue_markup(
@@ -61,4 +70,10 @@ def queue_back_markup(_, CPLAY):
         ]
     )
     return upl
-    
+
+def Badbtn():
+    return random.choice([
+        ButtonStyle.SUCCESS,
+        ButtonStyle.DANGER,
+        ButtonStyle.PRIMARY
+    ])
