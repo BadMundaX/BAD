@@ -25,12 +25,7 @@ from config import BANNED_USERS, lyrical
 
 
 QUERY_PIC = [
-    "https://litter.catbox.moe/mrs3d6.jpg",
-    "https://litter.catbox.moe/d0y8uy.jpg",
-    "https://litter.catbox.moe/0vqtje.jpg",
-    "https://litter.catbox.moe/7eb36m.jpg",
-    "https://litter.catbox.moe/eogdae.jpg",
-    "https://litter.catbox.moe/rjl0ek.jpg",
+    "https://files.catbox.moe/eljeeq.jpg",
 ]
 
 
