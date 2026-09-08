@@ -35,7 +35,7 @@ from BADMUSIC.utils.stream.autoplay import maybe_refetch_autoplay, queue_autopla
 
 from BADMUSIC.utils.stream.queue import put_queue
 
-from BADMUSIC.utils.thumbnails import get_thumb
+from BADMUSIC.utils.thumbnails import gen_thumb as get_thumb
 from strings import get_string
 
 
