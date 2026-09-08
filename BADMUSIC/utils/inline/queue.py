@@ -71,9 +71,18 @@ def queue_back_markup(_, CPLAY):
     )
     return upl
 
-def Badbtn():
-    return random.choice([
-        ButtonStyle.SUCCESS,
-        ButtonStyle.DANGER,
-        ButtonStyle.PRIMARY
-    ])
+def aq_markup(_, chat_id):
+    buttons = [
+        [
+            InlineKeyboardButton(text="ʏᴛ-ᴀᴘɪ sᴛᴀᴛυs 📼", callback_data="api_status", style=Badbtn()),
+        ],
+        [
+            InlineKeyboardButton(text="▷", callback_data=f"ADMIN Resume|{chat_id}", style=Badbtn()),
+            InlineKeyboardButton(text="II", callback_data=f"ADMIN Pause|{chat_id}", style=Badbtn()),
+            InlineKeyboardButton(text="↻", callback_data=f"ADMIN Replay|{chat_id}", style=Badbtn()), 
+            InlineKeyboardButton(text="‣‣I", callback_data=f"ADMIN Skip|{chat_id}", style=Badbtn()), 
+            InlineKeyboardButton(text="▢", callback_data=f"ADMIN Stop|{chat_id}", style=Badbtn()),
+        ],
+        [InlineKeyboardButton(text="ᴄʟᴏsᴇ", callback_data="close", style=ButtonStyle.DANGER)]
+    ]
+    return buttons
