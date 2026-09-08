@@ -28,7 +28,7 @@ from BADMUSIC.utils.inline import (
     stream_markup,
 )
 from BADMUSIC.utils.stream.queue import put_queue, put_queue_index
-from BADMUSIC.utils.thumbnails import get_thumb
+from BADMUSIC.utils.thumbnails import gen_thumb as get_thumb
 from BADMUSIC.utils.stream.thumbnail import get_thumbnail_status
 
 
