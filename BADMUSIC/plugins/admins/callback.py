@@ -14,7 +14,7 @@ from config import (
     adminlist,
     lyrical,
 )
-from BADMUSIC import YouTube, app
+from BADMUSIC import *
 from BADMUSIC.core.call import BAD
 from BADMUSIC.misc import SUDOERS, db
 from BADMUSIC.utils import seconds_to_min, time_to_seconds
