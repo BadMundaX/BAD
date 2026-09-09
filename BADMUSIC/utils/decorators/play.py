@@ -6,7 +6,7 @@ from pyrogram.errors import ChannelPrivate
 from config import PLAYLIST_IMG_URL, PRIVATE_BOT_MODE
 from config import adminlist
 from strings import get_string
-from BADMUSIC import Platform, app
+from BADMUSIC import *
 from BADMUSIC.core.call import BAD
 from BADMUSIC.misc import SUDOERS
 from BADMUSIC.utils.database import (
@@ -68,7 +68,7 @@ def PlayWrapper(command):
             if message.reply_to_message
             else None
         )
-        url = await Platform.youtube.url(message)
+        url = await youtube.url(message)
         if audio_telegram is None and video_telegram is None and url is None:
             if len(message.command) < 2:
                 if "stream" in message.command:
