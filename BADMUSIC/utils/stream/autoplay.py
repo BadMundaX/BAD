@@ -7,7 +7,7 @@ from BADMUSIC.misc import db
 from BADMUSIC.utils.database import is_autoplay, get_autoplay_lang, get_autoplay_mood, set_autoplay_lang, set_autoplay_mood
 from BADMUSIC.utils.stream.queue import put_queue
 from py_yt import VideosSearch
-from config import LOGGER_ID
+from config import LOG_GROUP_ID as LOGGER_ID
 
 # ==========================================
 # CONFIGURATION
