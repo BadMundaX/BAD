@@ -3,7 +3,7 @@ from pyrogram.types import Message
 
 from config import BANNED_USERS
 from strings import get_command
-from BADMUSIC import YouTube, app
+from BADMUSIC import *
 from BADMUSIC.core.call import BAD
 from BADMUSIC.misc import db
 from BADMUSIC.utils import AdminRightsCheck, seconds_to_min
