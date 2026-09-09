@@ -4,7 +4,7 @@
 from pyrogram import filters
 
 from config import BANNED_USERS
-from BADMUSIC import Platform, app
+from BADMUSIC import *
 from BADMUSIC.utils.channelplay import get_channeplayCB
 from BADMUSIC.utils.decorators.language import languageCB
 from BADMUSIC.utils.stream.stream import stream
@@ -36,7 +36,7 @@ async def play_live_stream(client, CallbackQuery, _):
         _["play_2"].format(channel) if channel else _["play_1"]
     )
     try:
-        details, track_id = await Platform.youtube.track(vidid, True)
+        details, track_id = await youtube.track(vidid, True)
     except Exception:
         return await mystic.edit_text(_["play_3"])
     ffplay = True if fplay == "f" else None
