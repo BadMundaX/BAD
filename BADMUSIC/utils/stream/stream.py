@@ -5,7 +5,7 @@ from typing import Union
 from pyrogram.types import InlineKeyboardMarkup
 
 import config
-from BADMUSIC import YouTube, app, Carbon
+from BADMUSIC import *
 from BADMUSIC.core.call import BAD as Bad
 
 # Define a dictionary to track the last message timestamp for each user
