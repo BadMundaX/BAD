@@ -20,7 +20,6 @@ from pyrogram.types import InlineKeyboardMarkup
 from py_yt import VideosSearch
 
 import config
-from BADMUSIC import Carbon, YouTube, app
 from BADMUSIC.core.call import BAD as Bad
 from BADMUSIC.misc import db
 from BADMUSIC.utils.database import add_active_video_chat, is_active_chat
