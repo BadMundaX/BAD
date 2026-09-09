@@ -10,7 +10,7 @@ from pytgcalls import PyTgCalls, exceptions, types
 from pytgcalls.pytgcalls_session import PyTgCallsSession
 
 import config
-from BADMUSIC import LOGGER, app, YouTube as yotube
+from BADMUSIC import LOGGER, app, youtube as YouTube
 from BADMUSIC.misc import db
 from BADMUSIC.utils.database import (
     add_active_chat,
