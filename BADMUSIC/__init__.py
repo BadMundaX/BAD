@@ -39,5 +39,5 @@ SoundCloud = SoundAPI()
 Spotify = SpotifyAPI()
 Resso = RessoAPI()
 Telegram = TeleAPI()
-YouTube = YouTubeAPI()
+youtube = YouTubeAPI()
 HELPABLE = {}
